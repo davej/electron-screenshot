@@ -19,6 +19,15 @@ screenshot(options, [cb])
 
 #### options
 
+### url
+url to snapshot
+
+### height
+height of window
+
+### width
+width of window
+
 ### filename
 png filename
 
