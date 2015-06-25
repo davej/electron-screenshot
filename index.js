@@ -1,11 +1,37 @@
-module.exports = screenshot
+module.exports = screenshot;
+
+var fs = require('fs');
+var BrowserWindow = require('browser-window');
 
 function screenshot(opt, cb) {
-  cb = cb || function() {}
-  var remote = require('' + 'remote') // prevent static analysis like browserify
-  setTimeout(function() {
-    remote.getCurrentWindow().capturePage(function handleCapture(img) {
-      remote.require('fs').writeFile(opt.filename, img.toPng(), cb)
-    });
-  }, opt.delay)
+  console.log(opt, cb);
+  cb = cb || function() {};
+  if (opt.url && opt.height && opt.width && opt.filename) {
+     captureUrl(opt, cb);
+  } else {
+    throw new Error('options `url`, `filename`, `width` and `height` are required');
+  }
+}
+
+function captureUrl(opt, cb) {
+  var win = new BrowserWindow({
+    x:0,
+    y:0,
+    width: opt.width,
+    height: opt.height,
+    show: false,
+    frame: false,
+    'enable-larger-than-screen': true,
+    'node-integration': false
+  });
+
+  win.loadUrl(opt.url);
+  win.webContents.on('did-finish-load', function() {
+    setTimeout(function() {
+      win.capturePage(function(img) {
+        console.log('writing file', opt.filename);
+        fs.writeFile(opt.filename, img.toPng(), cb);
+      });
+    }, (opt.delay || 0));
+  });
 }
