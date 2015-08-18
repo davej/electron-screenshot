@@ -1,7 +1,14 @@
 module.exports = screenshot;
 
 var fs = require('fs');
-var BrowserWindow = require('browser-window');
+var BrowserWindow;
+
+try {
+  BrowserWindow = require('browser-window');
+} catch (err) {
+  var remote = require('remote');
+  BrowserWindow = remote.require('browser-window');
+}
 
 function screenshot(opt, cb) {
   console.log(opt, cb);
