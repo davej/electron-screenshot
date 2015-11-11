@@ -11,7 +11,6 @@ try {
 }
 
 function screenshot(opt, cb) {
-  console.log(opt, cb);
   cb = cb || function() {};
   if (opt.url && opt.height && opt.width && opt.filename) {
      captureUrl(opt, cb);
@@ -36,7 +35,6 @@ function captureUrl(opt, cb) {
   win.webContents.on('did-finish-load', function() {
     setTimeout(function() {
       win.capturePage(function(img) {
-        console.log('writing file', opt.filename);
         fs.writeFile(opt.filename, img.toPng(), cb);
       });
     }, (opt.delay || 0));
