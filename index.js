@@ -31,11 +31,16 @@ function captureUrl(opt, cb) {
     'node-integration': false
   });
 
+  win.on('closed', function() {
+    win = null;
+  });
+
   win.loadUrl(opt.url);
   win.webContents.on('did-finish-load', function() {
     setTimeout(function() {
       win.capturePage(function(img) {
         fs.writeFile(opt.filename, img.toPng(), cb);
+        win.close();
       });
     }, (opt.delay || 0));
   });
