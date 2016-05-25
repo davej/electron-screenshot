@@ -1,14 +1,8 @@
 module.exports = screenshot;
 
 var fs = require('fs');
-var BrowserWindow;
-
-try {
-  BrowserWindow = require('browser-window');
-} catch (err) {
-  var remote = require('remote');
-  BrowserWindow = remote.require('browser-window');
-}
+var electron = require('electron');
+var BrowserWindow = electron.BrowserWindow || electron.remote.BrowserWindow;
 
 function screenshot(opt, cb) {
   cb = cb || function() {};
@@ -27,8 +21,10 @@ function captureUrl(opt, cb) {
     height: opt.height,
     show: false,
     frame: false,
-    'enable-larger-than-screen': true,
-    'node-integration': false
+    enableLargerThanScreen: true,
+    webPreferences: {
+      nodeIntegration: false
+    }
   });
 
   win.on('closed', function() {
