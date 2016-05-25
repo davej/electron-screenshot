@@ -31,7 +31,7 @@ function captureUrl(opt, cb) {
     win = null;
   });
 
-  win.loadUrl(opt.url);
+  win.loadURL(opt.url);
   win.webContents.on('did-finish-load', function() {
     setTimeout(function() {
       win.capturePage(function(img) {
