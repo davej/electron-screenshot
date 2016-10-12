@@ -24,7 +24,8 @@ function captureUrl(opt) {
       enableLargerThanScreen: true,
       webPreferences: {
         nodeIntegration: false
-      }
+      },
+      backgroundColor: '#ffffff',
     });
 
     win.on('closed', function() {
